@@ -7,6 +7,8 @@ import com.pg.im.util.FileSaveUtils;
 import com.pg.im.util.HttpResult;
 import com.pg.im.util.TextUtils;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +32,10 @@ public class FileController {
     FileService fileService;
 
     @PostMapping("upload")
-    @ApiOperation(value = "文件上传", notes = "文件上传")
-    public ModelMap uploadFile(MultipartFile file,int type,String username) {
+    @ApiOperation(value = "文件上传")
+    @ApiImplicitParams({ @ApiImplicitParam(paramType = "query", dataType = "String", name = "userId", value = "当前用户", required = true),
+            @ApiImplicitParam(paramType = "query", dataType = "int", name = "type", value = "文件类型，1为图片，2为音频文件,3为视频文件", required = true) })
+    public ModelMap uploadFile(MultipartFile file,int type,String userId) {
         if (file == null) {
             return HttpResult.getResultMap(ERROR.ERR_FILE_UPLOAD);
         }
@@ -52,7 +56,7 @@ public class FileController {
         }
         try {
             String localName = FileSaveUtils.saveImg(file);
-            String id = fileService.saveFile(username, localName, FileType.values()[type]);
+            String id = fileService.saveFile(userId, localName, FileType.values()[type]);
             return HttpResult.getResultOKMap(id);
         } catch (IOException e) {
             e.printStackTrace();

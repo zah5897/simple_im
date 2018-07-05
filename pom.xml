@@ -76,13 +76,12 @@
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.didispace/spring-boot-starter-swagger -->
+		<!--swagger -->
 		<dependency>
-			<groupId>com.didispace</groupId>
-			<artifactId>spring-boot-starter-swagger</artifactId>
-			<version>1.4.1.RELEASE</version>
+			<groupId>com.spring4all</groupId>
+			<artifactId>swagger-spring-boot-starter</artifactId>
+			<version>1.7.1.RELEASE</version>
 		</dependency>
-
 
 
 	</dependencies>

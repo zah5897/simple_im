@@ -21,7 +21,7 @@ public class UploadFile {
     @GeneratedValue(generator = "jpa-uuid")
     @Column(length = 32)
     private String id;
-    @Column(length = 32)
+    @Column(length = 64)
     private String name;
     private Date upload_time;
     @Column(length = 32)
