@@ -143,11 +143,6 @@ public class MQProvider
 						
 						start();
 					}
-
-					@Override
-					public void handleRecoveryStarted(Recoverable recoverable) {
-						logger.info("["+TAG+"] - 连接已成功自动恢复了！-------------------------");
-					}
 				});
 			}
 			catch (Exception e)

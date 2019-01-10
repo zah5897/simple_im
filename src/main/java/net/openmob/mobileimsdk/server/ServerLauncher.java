@@ -45,7 +45,7 @@ public abstract class ServerLauncher
 	
 	public static boolean debug = true;
 	public static String appKey = null;
-    public static int PORT = 7901;
+
     public static int SESION_RECYCLER_EXPIRE = 10;
     public static boolean bridgeEnabled = false;
     
@@ -66,7 +66,7 @@ public abstract class ServerLauncher
  		return running;
  	}
 
- 	public void startup() throws Exception
+ 	public void startup(int port) throws Exception
  	{	
  		if(!this.running)
  		{
@@ -92,11 +92,11 @@ public abstract class ServerLauncher
  				logger.info("[IMCORE-netty] 配置项：未开启与MobileIMSDK Web的互通.");
  			}
 
- 			ChannelFuture cf = bootstrap.bind("0.0.0.0", PORT).syncUninterruptibly();
+ 			ChannelFuture cf = bootstrap.bind("0.0.0.0", port).syncUninterruptibly();
  			__serverChannel4Netty = cf.channel();
 
  			this.running = true;
- 			logger.info("[IMCORE-netty] 基于MobileIMSDK的UDP服务正在端口" + PORT+"上监听中...");
+ 			logger.info("[IMCORE-netty] 基于MobileIMSDK的UDP服务正在端口" + port+"上监听中...");
 
  			__serverChannel4Netty.closeFuture().await();
  		}

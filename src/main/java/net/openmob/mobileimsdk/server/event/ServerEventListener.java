@@ -23,11 +23,11 @@ public interface ServerEventListener
 	public void onUserLoginAction_CallBack(String userId, String extra, Channel session);
 	public void onUserLogoutAction_CallBack(String userId, Object obj, Channel session);
 	public boolean onTransBuffer_CallBack(String userId, String from_user_id
-            , String dataContent, String fingerPrint, int typeu, Channel session);
+			, String dataContent, String fingerPrint, int typeu, Channel session);
 	public void onTransBuffer_C2C_CallBack(String userId, String from_user_id
-            , String dataContent, String fingerPrint, int typeu);
+			, String dataContent, String fingerPrint, int typeu,long receiveTime);
 	public boolean onTransBuffer_C2C_RealTimeSendFaild_CallBack(String userId
-            , String from_user_id, String dataContent
-            , String fingerPrint, int typeu);
+			, String from_user_id, String dataContent
+			, String fingerPrint, int typeu,long receiveTime);
 
 }

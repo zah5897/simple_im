@@ -59,13 +59,13 @@ public class ServerCoreHandler
     	BridgeProcessor bp = new BridgeProcessor(){
 			protected void realtimeC2CSuccessCallback(Protocal p){
 				serverEventListener.onTransBuffer_C2C_CallBack(
-						p.getTo(), p.getFrom(), p.getDataContent(), p.getFp(), p.getTypeu());
+						p.getTo(), p.getFrom(), p.getDataContent(), p.getFp(), p.getTypeu(),p.getServerTime());
 			}
 
 			@Override
 			protected boolean offlineC2CProcessCallback(Protocal p){
 				return serverEventListener.onTransBuffer_C2C_RealTimeSendFaild_CallBack(
-						p.getTo(), p.getFrom(), p.getDataContent(), p.getFp(), p.getTypeu());
+						p.getTo(), p.getFrom(), p.getDataContent(), p.getFp(), p.getTypeu(),p.getServerTime());
 			}
     	};
     	return bp;
@@ -108,19 +108,26 @@ public class ServerCoreHandler
 	    		logicProcessor.processACK(pFromClient, remoteAddress);
 	    		break;
 	    	}
-	    	case ProtocalType.C.FROM_CLIENT_TYPE_OF_COMMON$DATA:{
+	    	case ProtocalType.C.FROM_CLIENT_TYPE_OF_COMMON$DATA:
+	    	{
 	    		logger.info("[IMCORE-netty]<< 收到客户端"+remoteAddress+"的通用数据发送请求.");
-	    		if(serverEventListener != null){
-	    			if(!OnlineProcessor.isLogined(session)){
+	
+	    		if(serverEventListener != null)
+	    		{
+	    			if(!OnlineProcessor.isLogined(session))
+	    			{
 	    				LocalSendHelper.replyDataForUnlogined(session, pFromClient, null);
 	    				return;
 	    			}
-	    			if("0".equals(pFromClient.getTo())) {
-						logicProcessor.processC2SMessage(session, pFromClient, remoteAddress);
-					}else{
-						 logicProcessor.processC2CMessage(bridgeProcessor,session,pFromClient,remoteAddress);
-					}
-	    		}else{
+	
+	    			if("0".equals(pFromClient.getTo()))
+	    				logicProcessor.processC2SMessage(session, pFromClient, remoteAddress);
+	    			else
+	    				logicProcessor.processC2CMessage(bridgeProcessor, session
+	    						, pFromClient, remoteAddress);
+	    		}
+	    		else
+	    		{
 	    			logger.warn("[IMCORE-netty]<< 收到客户端"+remoteAddress+"的通用数据传输消息，但回调对象是null，回调无法继续.");
 	    		}
 	    		break;
