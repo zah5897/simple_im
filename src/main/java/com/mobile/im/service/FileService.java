@@ -18,11 +18,12 @@ public class FileService {
     @Autowired
     FileDao fileDao;
 
-    public String saveFile(String owner, String fileName, FileType type) {
+    public String saveFile(String owner, String fileName, long len, FileType type) {
         FileUpload uploadFile = new FileUpload();
         uploadFile.setName(fileName);
         uploadFile.setOwner(owner);
         uploadFile.setType(type);
+        uploadFile.setLen(len);
         uploadFile.setStatus(FileStatus.DEFAULT);
         uploadFile.setUpload_time(new Date());
         fileDao.insertObj(uploadFile);

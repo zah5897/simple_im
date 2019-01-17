@@ -43,7 +43,13 @@ public class ObjectUtil {
             //uuid主键
             UuidColumn uuidColumn = f.getAnnotation(UuidColumn.class);
             if (uuidColumn != null) {
-                map.put(f.getName(), UUIDUtil.getUUID());
+                String uuid = UUIDUtil.getUUID();
+                map.put(f.getName(), uuid);
+                try {
+                    invokeSetMethod(entityName, f.getName(), new Object[]{uuid});
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 continue;
             }
             Object result = null;
@@ -105,7 +111,7 @@ public class ObjectUtil {
         Class<? extends Object> ownerClass = owner.getClass();
         methodName = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
         Method method = null;
-        method = ownerClass.getMethod("set" + methodName);
+        method = ownerClass.getMethod("set" + methodName, String.class);
         method.invoke(owner, args);
     }
 

@@ -28,50 +28,9 @@ public class BaseDao<T> {
     static final ConcurrentMap<Class<?>, BeanPropertyRowMapper> mapperCache = new ConcurrentHashMap(64);
     @Autowired
     JdbcTemplate jdbcTemplate;
-
-    //    public long insertObj(T t) {
-//
-//        String tableName = getTableName(t);
-//        try {
-//            String sql = " insert into " + tableName + " (";
-//            Map<String, String> map = ObjectUtil.getProperty(t);
-//
-//            String filedStr = "";
-//            Set<String> set = map.keySet();
-//            for (String key : set) {
-//                filedStr += (key + ",");
-//            }
-//            filedStr = filedStr.substring(0, filedStr.length() - 1);
-//            filedStr += " ) ";
-//
-//            String values = " values ( ";
-//            for (String key : set) {
-//                values += ("'" + map.get(key) + "',");
-//            }
-//            values = values.substring(0, values.length() - 1);
-//            values += " ) ";
-//
-//            sql += (filedStr + values);
-//
-//            final String s = sql;
-//            KeyHolder keyHolder = new GeneratedKeyHolder();
-//            jdbcTemplate.update(new PreparedStatementCreator() {
-//                public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
-//                    PreparedStatement ps = conn.prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
-//                    return ps;
-//                }
-//
-//            }, keyHolder);
-//            return keyHolder.getKey().longValue();
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//            return -1;
-//        }
-//    }
     public int insertObj(T t) {
         return conversionToColumnValue(t);
     }
-
     private int conversionToColumnValue(T t) {
         Map<String, String> map = ObjectUtil.getProperty(t);
         Set<String> set = map.keySet();

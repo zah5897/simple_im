@@ -16,7 +16,7 @@ public class FileUpload {
     private String name;
     private Date upload_time;
     private String owner;
-
+    private long len;
     private FileType type = FileType.IMG;
     private FileStatus status = FileStatus.DEFAULT;
 
@@ -67,5 +67,13 @@ public class FileUpload {
 
     public void setStatus(FileStatus status) {
         this.status = status;
+    }
+
+    public long getLen() {
+        return len;
+    }
+
+    public void setLen(long len) {
+        this.len = len;
     }
 }
