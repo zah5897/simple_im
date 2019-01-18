@@ -5,7 +5,9 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
@@ -13,12 +15,17 @@ import javax.servlet.MultipartConfigElement;
 
 @SpringBootApplication
 @EnableSwagger2Doc
-public class IMApplication {
+public class IMApplication extends SpringBootServletInitializer {
 
     public static int imPort;
 
     public static void main(String[] args) {
         SpringApplication.run(IMApplication.class, args);
+        startIM();
+    }
+
+
+    private static void startIM() {
         try {
             while (true) {
                 if (imPort > 0) {
@@ -33,9 +40,20 @@ public class IMApplication {
         }
     }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(IMApplication.class);
+    }
+
     @Value("${im.port}")
     public void setImPort(int imPort) {
         IMApplication.imPort = imPort;
+        new Thread() {
+            @Override
+            public void run() {
+                startIM();
+            }
+        }.start();
     }
 
 //    @Bean

@@ -28,9 +28,11 @@ public class BaseDao<T> {
     static final ConcurrentMap<Class<?>, BeanPropertyRowMapper> mapperCache = new ConcurrentHashMap(64);
     @Autowired
     JdbcTemplate jdbcTemplate;
+
     public int insertObj(T t) {
         return conversionToColumnValue(t);
     }
+
     private int conversionToColumnValue(T t) {
         Map<String, String> map = ObjectUtil.getProperty(t);
         Set<String> set = map.keySet();
@@ -90,7 +92,7 @@ public class BaseDao<T> {
                 return 1;
             } catch (Exception e) {
                 log.error(e.getMessage());
-                throw  new RuntimeException("insert "+tableName+" error.");
+                throw new RuntimeException("insert " + tableName + " error.");
             }
         }
         //
@@ -121,7 +123,7 @@ public class BaseDao<T> {
     }
 
     protected String getTableName(T t) {
-        return ObjectUtil.getObjTableName(t.getClass());
+        return ObjectUtil.getObjTableName(t.getClass()).toLowerCase();
     }
 
 }
