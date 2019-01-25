@@ -1,9 +1,9 @@
 package com.mobile.im.util;
 
-import com.mobile.im.annotation.AutoIncrementColumn;
+import com.mobile.im.annotation.Id;
 import com.mobile.im.annotation.IgnoreColumn;
+import com.mobile.im.annotation.Strategy;
 import com.mobile.im.annotation.Table;
-import com.mobile.im.annotation.UuidColumn;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -33,22 +33,18 @@ public class ObjectUtil {
             if (ignore != null) {
                 continue;
             }
-
             //主键递增忽略的字段
-            AutoIncrementColumn auto = f.getAnnotation(AutoIncrementColumn.class);
-            if (auto != null) {
-                continue;
-            }
-
-            //uuid主键
-            UuidColumn uuidColumn = f.getAnnotation(UuidColumn.class);
-            if (uuidColumn != null) {
-                String uuid = UUIDUtil.getUUID();
-                map.put(f.getName(), uuid);
-                try {
-                    invokeSetMethod(entityName, f.getName(), new Object[]{uuid});
-                } catch (Exception e) {
-                    e.printStackTrace();
+            Id id = f.getAnnotation(Id.class);
+            if (id != null) {
+                //uuid主键
+                if (id.strategy() == Strategy.UUID) {
+                    String uuid = UUIDUtil.getUUID();
+                    map.put(f.getName(), uuid);
+                    try {
+                        invokeSetMethod(entityName, f.getName(), new Object[]{uuid});
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 continue;
             }
@@ -138,13 +134,13 @@ public class ObjectUtil {
     }
 
 
-    public static Field getAutoIncrement(Class<?> c) {
+    public static Field getIdentity(Class<?> c) {
         List<Field> allFields = new ArrayList<Field>();
         getClassField(c, allFields);
         for (Field f : allFields) {
             f.setAccessible(true);
-            AutoIncrementColumn autoIncrement = f.getAnnotation(AutoIncrementColumn.class);
-            if (autoIncrement != null) {
+            Id autoIncrement = f.getAnnotation(Id.class);
+            if (autoIncrement != null && autoIncrement.strategy() == Strategy.IDENTITY) { //说明存在主键递增字段
                 return f;
             }
         }

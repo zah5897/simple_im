@@ -1,7 +1,6 @@
 package com.mobile.im;
 
 import com.mobile.im.start.ServerLauncherImpl;
-import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,14 +13,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import javax.servlet.MultipartConfigElement;
 
 @SpringBootApplication
-@EnableSwagger2Doc
 public class IMApplication extends SpringBootServletInitializer {
 
     public static int imPort;
 
     public static void main(String[] args) {
         SpringApplication.run(IMApplication.class, args);
-        startIM();
     }
 
 

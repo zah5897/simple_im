@@ -1,8 +1,10 @@
 package com.mobile.im.entity;
 
-import com.mobile.im.annotation.UuidColumn;
+import com.mobile.im.annotation.Id;
+import com.mobile.im.annotation.Strategy;
 import com.mobile.im.enums.FileStatus;
 import com.mobile.im.enums.FileType;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
 import java.util.Date;
 
@@ -11,7 +13,7 @@ import java.util.Date;
  */
 
 public class FileUpload {
-    @UuidColumn
+    @Id(strategy = Strategy.UUID)
     private String id;
     private String name;
     private Date upload_time;

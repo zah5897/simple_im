@@ -75,7 +75,7 @@ public class BaseDao<T> {
 
 
         //判断是否有主键字段
-        Field autoIncrement = ObjectUtil.getAutoIncrement(t.getClass());
+        Field autoIncrement = ObjectUtil.getIdentity(t.getClass());
         if (autoIncrement != null) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(new PreparedStatementCreator() {

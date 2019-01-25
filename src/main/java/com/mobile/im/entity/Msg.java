@@ -1,6 +1,7 @@
 package com.mobile.im.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mobile.im.annotation.Id;
 import com.mobile.im.enums.ChatType;
 import com.mobile.im.enums.MsgType;
 
@@ -10,6 +11,7 @@ import java.util.Date;
  * Created by zah on 2018/6/22.
  */
 public class Msg {
+    @Id
     private long id;
     private String _from;
     private String username;

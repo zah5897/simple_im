@@ -1,6 +1,7 @@
 package com.mobile.im.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mobile.im.annotation.Id;
 import com.mobile.im.annotation.IgnoreColumn;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 public class User {
-    @IgnoreColumn
+    @Id
     private int id;
     private String username;
 
