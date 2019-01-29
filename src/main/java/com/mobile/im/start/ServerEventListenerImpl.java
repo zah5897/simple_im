@@ -16,6 +16,7 @@
 package com.mobile.im.start;
 
 import com.mobile.im.start.event.MsgEvent;
+import com.mobile.im.start.event.SysEvent;
 import com.mobile.im.start.event.UserEvent;
 import com.mobile.im.start.helper.EventQueueManager;
 import com.mobile.im.start.helper.LocalServiceHelper;
@@ -115,6 +116,13 @@ public class ServerEventListenerImpl implements ServerEventListener {
     public boolean onTransBuffer_CallBack(String userId, String from_user_id,
                                           String dataContent, String fingerPrint, int typeu, Channel session) {
         logger.debug("【DEBUG_回调通知】[typeu=" + typeu + "]收到了客户端" + from_user_id + "发给服务端的消息：str=" + dataContent);
+        SysEvent event=new SysEvent();
+        event.setDataContent(dataContent==null?"":dataContent.trim());
+        event.setFingerPrint(fingerPrint);
+        event.setFrom_user_id(from_user_id);
+        event.setTypeu(typeu);
+        event.setReceiveTime(System.currentTimeMillis()/1000);
+        EventQueueManager.get().putSysEvent(event);
         return true;
     }
 

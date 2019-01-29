@@ -1,16 +1,16 @@
 package com.mobile.im.service;
 
 import com.mobile.im.dao.MsgDao;
+import com.mobile.im.entity.Location;
 import com.mobile.im.entity.Msg;
-import com.mobile.im.enums.ChatType;
-import com.mobile.im.enums.MsgType;
 import com.mobile.im.start.event.MsgEvent;
 import com.mobile.im.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
+
+import static com.mobile.im.enums.MsgType.CMD;
 
 /**
  * Created by zah on 2018/6/22.
@@ -21,26 +21,28 @@ public class MsgService {
 
     @Autowired
     private MsgDao msgDao;
-
+    @Autowired
+    private LocationService locationService;
 
     private boolean existMsg(String fingerPrint) {
         int count = msgDao.historyMsgExist(fingerPrint);
         return count > 0;
     }
 
-    public void save(MsgEvent msgEvent) {
+    public void handleMsg(MsgEvent msgEvent) {
+        if (msgEvent.getTypeu() == -1) {
+            return;
+        } else if (msgEvent.getTypeu() == CMD.ordinal()) {
+            return;
+        }
         if (existMsg(msgEvent.getFingerPrint())) { //排重
             return;
         }
-        Msg msg = new Msg();
-        msg.set_from(msgEvent.getFrom_user_id());
-        msg.setUsername(msgEvent.getUserId());
-        msg.setChatType(ChatType.Chat);
-        msg.setFingerPrint(msgEvent.getFingerPrint());
-        msg.setReceiveTime(msgEvent.getReceiveTime());
-        msg.setContent(msgEvent.getDataContent());
-        msg.setOffState(msgEvent.isOffline() ? 1 : 0);
-        msg.setMsgType(MsgType.values()[msgEvent.getTypeu()]); //默认-1
+        save(msgEvent);
+    }
+
+    public void save(MsgEvent msgEvent) {
+        Msg msg = Msg.transToMsg(msgEvent);
         msgDao.insertObj(msg);
     }
 

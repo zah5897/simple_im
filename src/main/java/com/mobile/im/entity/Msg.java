@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mobile.im.annotation.Id;
 import com.mobile.im.enums.ChatType;
 import com.mobile.im.enums.MsgType;
+import com.mobile.im.start.event.MsgEvent;
 
 import java.util.Date;
+
+import static com.mobile.im.enums.MsgType.values;
 
 /**
  * Created by zah on 2018/6/22.
@@ -96,5 +99,20 @@ public class Msg {
 
     public void setOffState(int offState) {
         this.offState = offState;
+    }
+
+
+    public static Msg transToMsg(MsgEvent event){
+        Msg msg = new Msg();
+        msg.set_from(event.getFrom_user_id());
+        msg.setUsername(event.getUserId());
+        msg.setChatType(ChatType.Chat);
+        msg.setFingerPrint(event.getFingerPrint());
+        msg.setReceiveTime(event.getReceiveTime());
+        msg.setContent(event.getDataContent());
+        msg.setOffState(event.isOffline() ? 1 : 0);
+        int type=event.getTypeu();
+        msg.setMsgType(values()[type]); //默认-1
+        return msg;
     }
 }
